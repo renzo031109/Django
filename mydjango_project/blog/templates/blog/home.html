@@ -3,9 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>HOME</title>
 </head>
 <body>
     <h1>BLOG HOME</h1>
+    {% for post in posts %}
+        <h1>{{post.Title}}</h1>
+        <p>By {{post.Author}} on {{post.Date_posted}}</p>
+        <p>{{post.Content}}</p>
+    {% endfor %}
 </body>
 </html>
