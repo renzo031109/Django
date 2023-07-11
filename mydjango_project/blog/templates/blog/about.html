@@ -1,15 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    {% if Title %}
-        <title>Django Blog - {{Title}}</title>
-    {% else %}
-        <title>Django Blog</title>
-    {% endif %}
-</head>
-<body>
+{% extends "blog/base.html" %}
+{% block content %}
     <h1>PAGE BLOG ABOUT!!!</h1>
-</body>
-</html>
+{% endblock content %}
