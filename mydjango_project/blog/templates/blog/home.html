@@ -7,11 +7,11 @@
     <article class="media content-section">
         <div class="media-body">
           <div class="article-metadata">
-            <a class="mr-2" href="#">{{ post.Author }}</a>
-            <small class="text-muted">{{ post.Date_posted }}</small>
+            <a class="mr-2" href="#">{{ post.author }}</a>
+            <small class="text-muted">{{ post.date_posted|date:"F d, Y" }}</small>
           </div>
-          <h2><a class="article-title" href="#">{{ post.Title }}</a></h2>
-          <p class="article-content">{{ post.Content }}</p>
+          <h2><a class="article-title" href="#">{{ post.title }}</a></h2>
+          <p class="article-content">{{ post.content }}</p>
           <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
         </div>
       </article>
