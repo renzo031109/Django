@@ -3,7 +3,13 @@ import calendar
 from calendar import HTMLCalendar
 from datetime import datetime
 from .models import Event
+from .forms import VenueForm
 
+
+def add_venue(request):
+	submitted = False
+	form = VenueForm
+	return render(request, 'events/add_venue.html', {'form': form})
 
 def all_events(request):
 	event_list = Event.objects.all()
