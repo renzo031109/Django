@@ -2,10 +2,30 @@ from django.shortcuts import render
 import calendar
 from calendar import HTMLCalendar
 from datetime import datetime
-from .models import Event
+from .models import Event, Venue
 from .forms import VenueForm
 from django.http import HttpResponseRedirect
 
+
+def search_venues(request):	
+	if request.method == "POST":
+		searched = request.POST['searched']
+		
+		return render(request,'events/search_venues.html',
+		{'searched':searched})
+	else:
+		return render(request,'events/search_venues.html',{})
+
+
+def show_venue(request, venue_id):
+	venue = Venue.objects.get(pk=venue_id)
+	return render(request,'events/show_venue.html',
+	       {'venue': venue})
+
+def list_venues(request):
+	venue_list = Venue.objects.all()
+	return render(request,'events/venue.html',
+	       {'venue_list': venue_list})
 
 def add_venue(request):
 	submitted = False

@@ -1,0 +1,14 @@
+{% extends 'events/base.html' %}
+
+{% block content %}
+    <center>
+        <h1>VENUES</h1>
+
+        {% for venue in venue_list %}
+
+        <a href="{% url 'show-venue' venue.id %}">{{ venue }} </a> <br/>
+
+        {% endfor %}
+
+    </center>
+{% endblock %}
