@@ -3,9 +3,13 @@
 {% block content %}
     <center>
 
-        {% if searched %}
-        
+        {% if searched %}        
             <h1>You Search for {{searched}}</h1>
+            <br/>
+            {% for venue in venues %}
+                <a href="{% url 'show-venue' venue.id %}"> {{ venue }} </a>
+                <br/>
+            {% endfor %}
         {% else %}
             <h1>Hey! You Forgot to search for a venue...</h1>
         {% endif %}
