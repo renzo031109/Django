@@ -4,19 +4,41 @@ from calendar import HTMLCalendar
 from datetime import datetime
 from .models import Event, Venue
 from .forms import VenueForm, EventForm
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
 
 
+# Generate Text File Venue List
+def venue_text(request):
+	response = HttpResponse(content_type='text/plain')
+	response['Content-Disposition'] = 'attachment; filename=venues.txt'
+
+	#Designate the model
+	venues = Venue.objects.all()
+
+	#Create blank list
+	lines = []
+
+	#Loop thru and output
+	for venue in venues:
+		lines.append(f'{venue.name}\n {venue.address}\n {venue.zip_code}\n {venue.phone}\n {venue.web}\n {venue.email_address}\n\n\n')
+
+	# Write to TextFile
+	response.writelines(lines)
+	return response
+
+# Delete a Venue
 def delete_venue(request, venue_id):
 	venue = Venue.objects.get(pk=venue_id)
 	venue.delete()
 	return redirect('list-venues')
 
+# Delete an Event
 def delete_event(request, event_id):
 	event = Event.objects.get(pk=event_id)
 	event.delete()
 	return redirect('list-events')
 
+#update an event
 def update_event(request, event_id):
 	event = Event.objects.get(pk=event_id)
 	form = EventForm(request.POST or None, instance=event )
@@ -29,6 +51,7 @@ def update_event(request, event_id):
 		       'form':form
 		   })
 
+#Add an event
 def add_event(request):
 	submitted = False
 	if request.method == "POST":
@@ -58,9 +81,10 @@ def update_venue(request, venue_id):
 def search_venues(request):	
 	if request.method == "POST":
 		searched = request.POST['searched']
-		venues = venue.objects.filter()
+		venues = Venue.objects.filter(name__contains=searched)
 		return render(request,'events/search_venues.html',
-		{'searched':searched})
+		{'searched':searched,
+   		'venues':venues})
 	else:
 		return render(request,'events/search_venues.html',{})
 
