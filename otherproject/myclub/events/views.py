@@ -5,7 +5,75 @@ from datetime import datetime
 from .models import Event, Venue
 from .forms import VenueForm, EventForm
 from django.http import HttpResponseRedirect, HttpResponse
+import csv
 
+from django.http import FileResponse
+import io
+from reportlab.pdfgen import canvas
+from reportlab.lib.units import inch
+from reportlab.lib.pagesizes import letter
+
+# Generate a PDF file venue list
+def venue_pdf(request):
+	#Create a Bytestream buffer
+	buf = io.BytesIO()
+
+	#Create Canvas
+	c = canvas.Canvas(buf, pagesize=letter, bottomup=0)
+
+	#create a text objects
+	textob = c.beginText()
+	textob.setTextOrigin(inch, inch)
+	textob.setFont("Helvetica",14)
+
+	#Designate the model
+	venues = Venue.objects.all()
+
+	#Create blank list
+	lines = []
+
+	for venue in venues:
+		lines.append(venue.name)
+		lines.append(venue.address)
+		lines.append(venue.zip_code)
+		lines.append(venue.web)
+		lines.append(venue.phone)
+		lines.append(venue.email_address)
+		lines.append(" ")
+
+	#loop
+	for line in lines:
+		textob.textLine(line)
+
+	
+
+
+	#Finish up
+	c.drawText(textob)
+	c.showPage()
+	c.save()
+	buf.seek(0)
+	return FileResponse(buf, as_attachment=True, filename='venue.pdf')	
+
+# Generate CSV File Venue List
+def venue_csv(request):
+	response = HttpResponse(content_type='text/csv')
+	response['Content-Disposition'] = 'attachment; filename=venues.csv'
+
+	#create a CSV writer
+	writer = csv.writer(response)
+
+	#add columns headings
+	writer.writerow(['Venue Name', 'Address','Zip Code','Phone','Web Address','Email'])
+
+	#Designate the model
+	venues = Venue.objects.all()
+
+	#Loop thru and output
+	for venue in venues:
+		writer.writerow([venue.name,venue.address,venue.zip_code,venue.phone,venue.web, venue.email_address])
+
+	return response
 
 # Generate Text File Venue List
 def venue_text(request):
